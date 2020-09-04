@@ -3,7 +3,7 @@ package com.xsc.coder.program;
 /**
  * 链表按3个一翻转
  * 如： 1 > 2 > 3 > 4 > 5 > 6 > 7
- *     3 > 2 > 1 > 6 > 5 > 4 > 7
+ * 3 > 2 > 1 > 6 > 5 > 4 > 7
  *
  * @author xia
  * @date 2020/9/4 19:27
@@ -25,7 +25,7 @@ public class NodeReserve {
         e.setNext(f);
         Node g = new Node(7);
         f.setNext(g);
-        Node reverse = reverse(a);
+        Node reverse = allReserve(a);
         System.out.println(reverse.value);
         while (reverse.next != null) {
             Node next = reverse.next;
@@ -34,6 +34,14 @@ public class NodeReserve {
         }
     }
 
+    /**
+     * 间隔3个一反转
+     * 1 > 2 > 3 > 4 > 5 > 6 > 7
+     * 3 > 2 > 1 > 6 > 5 > 4 > 7
+     *
+     * @param node 头结点
+     * @return Node
+     */
     private static Node reverse(Node node) {
         Node head = new Node(0);
         head.next = node;
@@ -53,6 +61,25 @@ public class NodeReserve {
             head = a;
         }
         return newHead;
+    }
+
+    /**
+     * 全反转
+     * 1 > 2 > 3 > 4 > 5 > 6 > 7
+     * 7 > 6 > 5 > 4 > 3 > 2 > 1
+     *
+     * @param node 头结点
+     * @return Node
+     */
+    private static Node allReserve(Node node) {
+        Node prev = null;
+        while (node != null) {
+            Node next = node.next;
+            node.next = prev;
+            prev = node;
+            node = next;
+        }
+        return prev;
     }
 
     private static class Node {
