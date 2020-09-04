@@ -8,7 +8,7 @@ package com.xsc.coder.program;
  * @author xia
  * @date 2020/9/4 19:27
  */
-public class NodeReserve {
+public class NodeReverse {
 
     public static void main(String[] args) {
 
