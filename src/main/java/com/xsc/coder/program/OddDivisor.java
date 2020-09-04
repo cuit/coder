@@ -30,10 +30,10 @@ public class OddDivisor {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
-            Stopwatch stopWatch = Stopwatch.createStarted();
+            Stopwatch stopwatch = Stopwatch.createStarted();
             int n = scanner.nextInt();
-            int x;
-            int y;
+            long x;
+            long y;
             if (n % 2 == 0) {
                 y = n / 2;
                 x = (1 + n - 1) * y / 2;
@@ -48,13 +48,13 @@ public class OddDivisor {
                 } else {
                     int j = i / 2;
                     while (j % 2 == 0) {
-                        j = j / 2;
+                        j /= 2;
                     }
                     result += j;
                 }
             }
             System.out.println(result);
-            System.out.println(stopWatch.elapsed(TimeUnit.MILLISECONDS));
+            System.out.println("耗时:"+stopwatch.elapsed(TimeUnit.MILLISECONDS));
         }
     }
 
