@@ -1,10 +1,9 @@
 package com.xsc.coder.program;
 
-import org.springframework.util.StopWatch;
+import com.google.common.base.Stopwatch;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 题目描述
@@ -31,7 +30,7 @@ public class OddDivisor {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNext()) {
-            StopWatch stopWatch = new StopWatch();
+            Stopwatch stopWatch = Stopwatch.createStarted();
             int n = scanner.nextInt();
             int x;
             int y;
@@ -43,20 +42,19 @@ public class OddDivisor {
                 x = (1 + n) * (n / 2 + 1) / 2;
             }
             long result = x;
-            Map<Integer, Integer> map = new HashMap<>();
             for (int i = 1; i <= y; i++) {
                 if (i % 2 != 0) {
                     result += i;
-                    map.put(i, i);
                 } else {
                     int j = i / 2;
-                    result += map.get(j);
-                    map.put(i, map.get(j));
+                    while (j % 2 == 0) {
+                        j = j / 2;
+                    }
+                    result += j;
                 }
             }
             System.out.println(result);
-            stopWatch.stop();
-            System.out.println(stopWatch.getLastTaskTimeMillis());
+            System.out.println(stopWatch.elapsed(TimeUnit.MILLISECONDS));
         }
     }
 
