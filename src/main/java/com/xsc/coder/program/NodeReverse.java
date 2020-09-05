@@ -25,6 +25,8 @@ public class NodeReverse {
         e.setNext(f);
         Node g = new Node(7);
         f.setNext(g);
+        g.setNext(d);
+        System.out.println(isLoop(a));
         Node reverse = allReserve(a);
         System.out.println(reverse.value);
         while (reverse.next != null) {
@@ -60,6 +62,9 @@ public class NodeReverse {
             b.next = a;
             head = a;
         }
+        if (newHead == null) {
+            newHead = node;
+        }
         return newHead;
     }
 
@@ -80,6 +85,32 @@ public class NodeReverse {
             node = next;
         }
         return prev;
+    }
+
+    /**
+     * 判断链表是否有环 （快，慢指针）
+     *
+     * @param head 头结点
+     * @return bool
+     */
+    private static boolean isLoop(Node head) {
+        if (head == null || head.next == null || head.next.next == null) {
+            return false;
+        }
+        Node a = head.next;
+        Node b = head.next.next;
+        while (a != null && b != null) {
+            if (a == b) {
+                return true;
+            }
+            a = a.next;
+            if (b.next != null) {
+                b = b.next.next;
+            } else {
+                b = null;
+            }
+        }
+        return false;
     }
 
     private static class Node {
