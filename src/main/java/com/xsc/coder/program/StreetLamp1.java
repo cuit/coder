@@ -42,10 +42,14 @@ public class StreetLamp1 {
                 int n = scanner.nextInt();
                 String str = scanner.next();
                 System.out.println(process(str));
+                System.out.println(process1(str));
             }
         }
     }
 
+    /**
+     * 方法一
+     */
     private static int process(String str) {
         if (str == null || str.length() == 0) {
             return 0;
@@ -57,16 +61,31 @@ public class StreetLamp1 {
             if (chars[i] == 'X' || flags[i]) {
                 continue;
             }
+            flags[i] = true;
             if (i + 2 < chars.length) {
-                flags[i] = true;
                 flags[i + 1] = true;
                 flags[i + 2] = true;
             } else if (i + 1 < chars.length) {
-                flags[i] = true;
                 flags[i + 1] = true;
-            } else {
-                flags[i] = true;
             }
+            result++;
+        }
+        return result;
+    }
+
+    /**
+     * 方法二：每次如果匹配上了'.'，自动往后跳跃三位
+     */
+    private static int process1(String str) {
+        if (str == null || str.length() == 0) {
+            return 0;
+        }
+        int result = 0;
+        for (int i = 0; i < str.length(); i++) {
+            if (str.charAt(i) == 'X') {
+                continue;
+            }
+            i += 2;
             result++;
         }
         return result;
