@@ -62,7 +62,7 @@ public class Direction {
             }
         }
         int len = sb.length();
-        if (len == 0) {
+        if (len % 4 == 0) {
             return DIRECTION[0];
         }
         char c = sb.charAt(0);
