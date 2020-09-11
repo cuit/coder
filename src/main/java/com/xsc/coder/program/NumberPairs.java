@@ -1,6 +1,9 @@
 package com.xsc.coder.program;
 
+import com.google.common.base.Stopwatch;
+
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 题目描述
@@ -31,20 +34,28 @@ public class NumberPairs {
         while (scanner.hasNext()) {
             int n = scanner.nextInt();
             int k = scanner.nextInt();
+            Stopwatch stopwatch = Stopwatch.createStarted();
             System.out.println(process(n, k));
+            System.out.println("耗时:" + stopwatch.elapsed(TimeUnit.SECONDS));
         }
     }
 
-    private static int process(int n, int k) {
-        int result = 0;
-        for (int i = 1; i <= n; i++) {
-            if (i >= k) {
-                result += n - i;
-            }
-            for (int j = i / 2; j <= i - k; j++) {
-                if (i % j >= k) {
-                    result++;
-                }
+    private static long process(int n, int k) {
+        // x / y >= k
+        if (k == 0) {
+            return (long) n * n;
+        }
+        long result = 0;
+        // 如果想满足余数大于或等于k,则被除数必须满足大于k，才有可能
+        for (int y = k + 1; y <= n; y++) {
+            // 如果n=14, k = 3, 此时y=5
+            // 那么 x 就有 3,4, 8,9 满足
+            result += (n / y) * (y - k);
+            // 剩余部分 为4个数
+            int temp = n % y;
+            if (temp >= k) {
+                // 13 14 满足
+                result += temp - k + 1;
             }
         }
         return result;
