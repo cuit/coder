@@ -17,10 +17,10 @@ public class Fibonacci {
             int n = scanner.nextInt();
             Stopwatch stopwatch1 = Stopwatch.createStarted();
             System.out.println(cacl1(n) + "耗时:" + stopwatch1.elapsed(TimeUnit.MILLISECONDS));
-            Stopwatch stopwatch2 = Stopwatch.createStarted();
-            System.out.println(cacl2(n) + "耗时:" + stopwatch2.elapsed(TimeUnit.MILLISECONDS));
-            Stopwatch stopwatch3 = Stopwatch.createStarted();
-            System.out.println(cacl3(n) + "耗时:" + stopwatch3.elapsed(TimeUnit.MILLISECONDS));
+//            Stopwatch stopwatch2 = Stopwatch.createStarted();
+//            System.out.println(cacl2(n) + "耗时:" + stopwatch2.elapsed(TimeUnit.MILLISECONDS));
+//            Stopwatch stopwatch3 = Stopwatch.createStarted();
+//            System.out.println(cacl3(n) + "耗时:" + stopwatch3.elapsed(TimeUnit.MILLISECONDS));
         }
     }
 
