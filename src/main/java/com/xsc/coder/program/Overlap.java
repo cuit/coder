@@ -1,6 +1,9 @@
 package com.xsc.coder.program;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 /**
  * 题目描述
@@ -42,35 +45,45 @@ public class Overlap {
             int[] y1 = new int[n];
             int[] x2 = new int[n];
             int[] y2 = new int[n];
-            init(scanner, n, x1);
-            init(scanner, n, y1);
-            init(scanner, n, x2);
-            init(scanner, n, y2);
-            System.out.println(process(n, x1, y1, x2, y2));
+            List<Integer> x = new ArrayList<>();
+            List<Integer> y = new ArrayList<>();
+            init(scanner, n, x1, x);
+            init(scanner, n, y1, y);
+            init(scanner, n, x2, x);
+            init(scanner, n, y2, y);
+            System.out.println(process(n, x1, y1, x2, y2, x, y));
         }
     }
 
-    private static void init(Scanner scanner, int n, int[] z) {
+    private static void init(Scanner scanner, int n, int[] z, List<Integer> list) {
         for (int i = 0; i < n; i++) {
             z[i] = scanner.nextInt();
+            list.add(z[i]);
         }
     }
 
-    private static int process(int n, int[] x1, int[] y1, int[] x2, int[] y2) {
+    private static int process(int n, int[] x1, int[] y1, int[] x2, int[] y2, List<Integer> x, List<Integer> y) {
+        x = x.stream().distinct().sorted().collect(Collectors.toList());
+        y = y.stream().distinct().sorted().collect(Collectors.toList());
         int result = 0;
-        for (int i = 0; i < n; i++) {
-            int temp = 1;
-            for (int j = 0; j < n; j++) {
-                if (i == j) {
-                    continue;
+        for (int i = 0; i < x.size() - 1; i++) {
+            int tempX = 0;
+            for (int j = 0; j < y.size() - 1; j++) {
+                int tempY = 0;
+                for (int k = 0; k < n; k++) {
+                    if (isCover(x.get(i), y.get(j), x.get(i + 1), y.get(j + 1), x1[k], y1[k], x2[k], y2[k])) {
+                        tempY++;
+                    }
                 }
-                if (x1[i] >= x1[j] && x1[i] < x2[j] && ((y1[i] >= y1[j] && y1[i] < y2[j]) || (y1[i] <= y2[j] && y2[i] >= y1[j]))) {
-                    temp++;
-                }
+                tempX = Math.max(tempX, tempY);
             }
-            result = Math.max(result, temp);
+            result = Math.max(result, tempX);
         }
         return result;
+    }
+
+    private static boolean isCover(int x1, int y1, int x2, int y2, int m1, int n1, int m2, int n2) {
+        return x1 >= m1 && x2 <= m2 && y1 >= n1 && y2 <= n2;
     }
 
 }
