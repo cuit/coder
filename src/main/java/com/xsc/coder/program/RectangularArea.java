@@ -32,6 +32,6 @@ public class RectangularArea {
             }
             result = Math.max(result, currentHeight * (k - j - 1));
         }
-        return result;
+        return result;  
     }
 }
