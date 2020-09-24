@@ -94,10 +94,6 @@ public class Listening {
             this.i = i;
             this.value = value;
         }
-
-        public int getValue() {
-            return value;
-        }
     }
 
 }
