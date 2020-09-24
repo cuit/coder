@@ -33,10 +33,8 @@ public class Listening {
         while (scanner.hasNext()) {
             int n = scanner.nextInt();
             int k = scanner.nextInt();
-//            int[] interest = new int[n];
             Index[] interest = new Index[n];
             for (int i = 0; i < n; i++) {
-//                interest[i] = scanner.nextInt();
                 interest[i] = new Index(i, scanner.nextInt());
             }
             boolean[] wake = new boolean[n];
@@ -57,29 +55,20 @@ public class Listening {
                 result += interest[i].value;
                 continue;
             }
-            Index head = queue.peek();
-            Index current = interest[i];
-            int itmp = tmp;
-            if (head == null || current.i - head.i < k) {
-                itmp += current.value;
-                queue.add(current);
-            } else {
-                Index poll = queue.poll();
-                itmp = itmp - poll.value;
-                queue.add(current);
-                itmp = itmp + current.value;
+            // 需要移除的
+            while (!queue.isEmpty() && queue.peek().i + k <= i) {
+                tmp -= queue.poll().value;
             }
-            tmp = Math.max(tmp, itmp);
-//            else {
-//                int itmp = 0;
-//                for (int j = i; j < n && j < i + k; j++) {
-//                    if (weak[j]) {
-//                        continue;
-//                    }
-//                    itmp += interest[j];
-//                }
-//                tmp = Math.max(tmp, itmp);
-//            }
+            if (queue.size() < k) {
+                Index current = interest[i];
+                tmp += current.value;
+                current.result = tmp;
+                queue.add(current);
+            }
+        }
+        tmp = 0;
+        for (int i = 0; i < n; i++) {
+            tmp = Math.max(tmp, interest[i].result);
         }
         return result + tmp;
     }
@@ -90,9 +79,15 @@ public class Listening {
 
         private int value;
 
+        private int result;
+
         public Index(int i, int value) {
             this.i = i;
             this.value = value;
+        }
+
+        public int getResult() {
+            return result;
         }
     }
 
