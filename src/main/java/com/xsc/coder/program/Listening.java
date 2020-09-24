@@ -59,14 +59,17 @@ public class Listening {
             }
             Index head = queue.peek();
             Index current = interest[i];
+            int itmp = tmp;
             if (head == null || current.i - head.i < k) {
+                itmp += current.value;
                 queue.add(current);
             } else {
-                if (current.value > head.value) {
-                    queue.poll();
-                    queue.add(current);
-                }
+                Index poll = queue.poll();
+                itmp = itmp - poll.value;
+                queue.add(current);
+                itmp = itmp + current.value;
             }
+            tmp = Math.max(tmp, itmp);
 //            else {
 //                int itmp = 0;
 //                for (int j = i; j < n && j < i + k; j++) {
@@ -78,7 +81,7 @@ public class Listening {
 //                tmp = Math.max(tmp, itmp);
 //            }
         }
-        return result + queue.stream().map(Index::getValue).reduce(0, Integer::sum);
+        return result + tmp;
     }
 
     private static class Index {
