@@ -53,6 +53,7 @@ public class EightQueen {
             result.add(newMap);
             return;
         }
+        // 尝试第一行n个位置
         for (int i = 0; i < n; i++) {
             // 当前位置还可以放一个皇后位置
             if (map[k][i] == 0) {
