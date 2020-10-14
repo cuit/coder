@@ -51,9 +51,9 @@ public class WhetherMultiple {
     }
 
     private static boolean isMultiple(String str) {
-        list = new ArrayList<>();
         char[] chars = str.toCharArray();
-        q(chars, 0, chars.length - 1);
+        List<char[]> list = new ArrayList<>();
+        q(chars, 0, chars.length - 1, list);
         for (char[] chars1 : list) {
             String s = String.valueOf(chars1);
             if (s.equals(str)) {
@@ -66,22 +66,20 @@ public class WhetherMultiple {
         return false;
     }
 
-    private static List<char[]> list;
-
-    private static void q(char[] chars, int start, int end) {
+    private static void q(char[] chars, int start, int end, List<char[]> result) {
         if (start == end) {
             char[] newChar = Arrays.copyOf(chars, chars.length);
-            list.add(newChar);
-        } else {
-            for (int i = start; i <= end; i++) {
-                char tmp = chars[start];
-                chars[start] = chars[i];
-                chars[i] = tmp;
-                q(chars, start + 1, end);
-                tmp = chars[start];
-                chars[start] = chars[i];
-                chars[i] = tmp;
-            }
+            result.add(newChar);
+            return;
+        }
+        for (int i = start; i <= end; i++) {
+            char tmp = chars[start];
+            chars[start] = chars[i];
+            chars[i] = tmp;
+            q(chars, start + 1, end, result);
+            tmp = chars[start];
+            chars[start] = chars[i];
+            chars[i] = tmp;
         }
     }
 }
