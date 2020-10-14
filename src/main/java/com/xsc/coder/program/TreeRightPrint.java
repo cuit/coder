@@ -11,10 +11,10 @@ import java.util.stream.Collectors;
 
 /**
  * 从右边看向一个树，打印出来
- * A
- * B     C
- * D    E
- * F
+ *                  A
+ *            B            C
+ *       D         E
+ *            F
  * 输出; A C E F
  *
  * @author xia
