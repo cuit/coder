@@ -39,18 +39,18 @@ public class TreeRightPrint {
     }
 
     private static List<String> process(TreeNode root) {
-        Queue<TreeNodeWithLevel> quene = new LinkedList<>();
-        quene.add(new TreeNodeWithLevel(root, 0));
+        Queue<TreeNodeWithLevel> queue = new LinkedList<>();
+        queue.add(new TreeNodeWithLevel(root, 0));
         Map<Integer, String> map = new HashMap<>();
-        while (!quene.isEmpty()) {
-            TreeNodeWithLevel poll = quene.poll();
+        while (!queue.isEmpty()) {
+            TreeNodeWithLevel poll = queue.poll();
             TreeNode treeNode = poll.getTreeNode();
             map.put(poll.getLevel(), treeNode.getValue());
             if (treeNode.getLeft() != null) {
-                quene.add(new TreeNodeWithLevel(treeNode.getLeft(), poll.getLevel() + 1));
+                queue.add(new TreeNodeWithLevel(treeNode.getLeft(), poll.getLevel() + 1));
             }
             if (treeNode.getRight() != null) {
-                quene.add(new TreeNodeWithLevel(treeNode.getRight(), poll.getLevel() + 1));
+                queue.add(new TreeNodeWithLevel(treeNode.getRight(), poll.getLevel() + 1));
             }
         }
         return map.entrySet().stream().sorted(Comparator.comparing(Map.Entry::getKey))
