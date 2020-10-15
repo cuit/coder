@@ -1,7 +1,14 @@
 package com.xsc.coder.program;
 
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
+
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author xia
@@ -9,7 +16,14 @@ import java.util.concurrent.CountDownLatch;
  */
 public class CountDownLatchTest {
 
-    private CountDownLatch countDownLatch = new CountDownLatch(10);
+    private static final ThreadFactory FACTORY = new ThreadFactoryBuilder()
+            .setNameFormat("c-%d").build();
+
+    private static final ExecutorService EXECUTOR_SERVICE = new ThreadPoolExecutor(20, 30,
+            1, TimeUnit.MINUTES, new LinkedBlockingQueue<>(100), FACTORY,
+            new ThreadPoolExecutor.AbortPolicy());
+
+    private final CountDownLatch countDownLatch = new CountDownLatch(10);
 
     public static void main(String[] args) {
         CountDownLatchTest test = new CountDownLatchTest();
@@ -18,7 +32,7 @@ public class CountDownLatchTest {
 
     private class Person implements Runnable {
 
-        private int result;
+        private final int result;
 
         public Person(int result) {
             this.result = result;
@@ -32,7 +46,7 @@ public class CountDownLatchTest {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            System.out.println(Thread.currentThread().getName()+" is over");
+            System.out.println(Thread.currentThread().getName() + " is over");
         }
     }
 
@@ -41,7 +55,7 @@ public class CountDownLatchTest {
         System.out.println("begin");
         for (int i = 0; i < 10; i++) {
             int result = random.nextInt(10) + 1;
-            new Thread(new Person(result)).start();
+            EXECUTOR_SERVICE.execute(new Person(result));
         }
         try {
             countDownLatch.await();

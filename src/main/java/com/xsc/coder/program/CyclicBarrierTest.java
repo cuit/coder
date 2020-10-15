@@ -24,16 +24,11 @@ public class CyclicBarrierTest {
             1, TimeUnit.MINUTES, new LinkedBlockingQueue<>(100), FACTORY,
             new ThreadPoolExecutor.AbortPolicy());
 
-    private CyclicBarrier cyclicBarrier = new CyclicBarrier(10);
-
-    public static void main(String[] args) {
-        CyclicBarrierTest test = new CyclicBarrierTest();
-        test.begin();
-    }
+    private final CyclicBarrier cyclicBarrier = new CyclicBarrier(10);
 
     private class Person implements Runnable {
 
-        private int result;
+        private final int result;
 
         public Person(int result) {
             this.result = result;
@@ -41,7 +36,7 @@ public class CyclicBarrierTest {
 
         @Override
         public void run() {
-            System.out.println(Thread.currentThread().getName() +" is begin");
+            System.out.println(Thread.currentThread().getName() + " is begin");
             try {
                 Thread.sleep(result * 2000);
                 cyclicBarrier.await();
@@ -60,6 +55,11 @@ public class CyclicBarrierTest {
             EXECUTOR_SERVICE.execute(new Person(result));
         }
         System.out.println("over");
+    }
+
+    public static void main(String[] args) {
+        CyclicBarrierTest test = new CyclicBarrierTest();
+        test.begin();
     }
 
 }

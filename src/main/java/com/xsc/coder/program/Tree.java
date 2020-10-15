@@ -37,10 +37,10 @@ public class Tree {
         if (Objects.isNull(root)) {
             return result;
         }
-        Stack<TreeNode> stack = new Stack<>();
+        Stack<TreeNode<T>> stack = new Stack<>();
         stack.push(root);
         while (!stack.isEmpty()) {
-            TreeNode pop = stack.pop();
+            TreeNode<T> pop = stack.pop();
             result.add((T) pop.getValue());
             if (Objects.nonNull(pop.getRight())) {
                 stack.push(pop.getRight());
@@ -65,9 +65,9 @@ public class Tree {
 
         private T value;
 
-        private TreeNode left;
+        private TreeNode<T> left;
 
-        private TreeNode right;
+        private TreeNode<T> right;
 
         public TreeNode(T value) {
             this.value = value;
@@ -77,20 +77,20 @@ public class Tree {
             return value;
         }
 
-        public TreeNode getLeft() {
+        public TreeNode<T> getLeft() {
             return left;
         }
 
-        public TreeNode<T> setLeft(TreeNode left) {
+        public TreeNode<T> setLeft(TreeNode<T> left) {
             this.left = left;
             return this;
         }
 
-        public TreeNode getRight() {
+        public TreeNode<T> getRight() {
             return right;
         }
 
-        public TreeNode<T> setRight(TreeNode right) {
+        public TreeNode<T> setRight(TreeNode<T> right) {
             this.right = right;
             return this;
         }

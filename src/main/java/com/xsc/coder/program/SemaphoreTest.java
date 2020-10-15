@@ -20,15 +20,15 @@ public class SemaphoreTest {
     private static final ThreadFactory FACTORY = new ThreadFactoryBuilder()
             .setNameFormat("c-%d").build();
 
-    private static final ExecutorService EXECUTOR_SERVICE = new ThreadPoolExecutor(20, 30,
-            1, TimeUnit.MINUTES, new LinkedBlockingQueue<>(100), FACTORY,
+    private static final ExecutorService EXECUTOR_SERVICE = new ThreadPoolExecutor(10, 30,
+            1, TimeUnit.MINUTES, new LinkedBlockingQueue<>(10), FACTORY,
             new ThreadPoolExecutor.AbortPolicy());
 
-    private Semaphore semaphore = new Semaphore(5);
+    private final Semaphore semaphore = new Semaphore(5);
 
     private class Person implements Runnable {
 
-        private int result;
+        private final int result;
 
         public Person(int result) {
             this.result = result;
@@ -39,7 +39,7 @@ public class SemaphoreTest {
             try {
                 semaphore.acquire();
                 System.out.println(Thread.currentThread().getName()+" is begin "+ new Date());
-                Thread.sleep(result * 1000);
+                Thread.sleep(result * 3000);
                 System.out.println(Thread.currentThread().getName()+" is over " + new Date());
                 semaphore.release();
             } catch (InterruptedException e) {
