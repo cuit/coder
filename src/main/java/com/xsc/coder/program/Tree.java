@@ -24,7 +24,21 @@ public class Tree {
         b.setRight(e);
         TreeNode<String> f = new TreeNode<>("f");
         c.setRight(f);
+        TreeNode<String> g = new TreeNode<>("g");
+        d.setLeft(g);
+        TreeNode<String> h = new TreeNode<>("h");
+        d.setRight(h);
+        TreeNode<String> i = new TreeNode<>("i");
+        f.setLeft(i);
+        TreeNode<String> j = new TreeNode<>("j");
+        i.setRight(j);
+        TreeNode<String> k = new TreeNode<>("k");
+        c.setLeft(k);
         List<String> process = prev(a);
+        System.out.println(Arrays.toString(process.toArray()));
+        process = middle(a);
+        System.out.println(Arrays.toString(process.toArray()));
+        process = next(a);
         System.out.println(Arrays.toString(process.toArray()));
     }
 
@@ -52,12 +66,75 @@ public class Tree {
         return result;
     }
 
+    /**
+     * 中序遍历
+     * 左 -> 根 -> 右
+     */
     private static <T> List<T> middle(TreeNode<T> root) {
         List<T> result = new ArrayList<>();
         if (Objects.isNull(root)) {
             return result;
         }
+        Stack<TreeNode<T>> stack = new Stack<>();
+        TreeNode<T> tmp = root;
+        while (Objects.nonNull(tmp)) {
+            stack.push(tmp);
+            tmp = tmp.getLeft();
+        }
+        while (!stack.isEmpty()) {
+            TreeNode<T> pop = stack.pop();
+            result.add(pop.getValue());
+            tmp = pop.getRight();
+            if (Objects.nonNull(tmp)) {
+                stack.push(tmp);
+                while (tmp.getLeft() != null) {
+                    stack.push(tmp.getLeft());
+                    tmp = tmp.getLeft();
+                }
+            }
+        }
+        return result;
+    }
 
+    /**
+     * 后序遍历
+     * 左 -> 右 -> 根
+     */
+    private static <T> List<T> next(TreeNode<T> root) {
+        List<T> result = new ArrayList<>();
+        if (Objects.isNull(root)) {
+            return result;
+        }
+        TreeNode<T> tmp = root;
+        Stack<TreeNode<T>> stack = new Stack<>();
+        while (tmp != null) {
+            stack.push(tmp);
+            tmp = tmp.getLeft();
+        }
+        List<TreeNode<T>> visit = new ArrayList<>();
+        while (!stack.isEmpty()) {
+            TreeNode<T> peek = stack.peek();
+            if (peek.getRight() == null) {
+                result.add(peek.getValue());
+                visit.add(peek);
+                stack.pop();
+                continue;
+            }
+            tmp = peek.getRight();
+            if (visit.contains(tmp)) {
+                result.add(peek.getValue());
+                visit.add(peek);
+                stack.pop();
+                continue;
+            }
+            if (tmp != null) {
+                stack.push(tmp);
+                while (tmp.getLeft() != null) {
+                    stack.push(tmp.getLeft());
+                    tmp = tmp.getLeft();
+                }
+            }
+        }
         return result;
     }
 
@@ -93,6 +170,21 @@ public class Tree {
         public TreeNode<T> setRight(TreeNode<T> right) {
             this.right = right;
             return this;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            TreeNode<?> treeNode = (TreeNode<?>) o;
+            return Objects.equals(value, treeNode.value) &&
+                    Objects.equals(left, treeNode.left) &&
+                    Objects.equals(right, treeNode.right);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(value, left, right);
         }
     }
 }
