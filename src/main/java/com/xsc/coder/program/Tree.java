@@ -40,6 +40,8 @@ public class Tree {
         System.out.println(Arrays.toString(process.toArray()));
         process = next(a);
         System.out.println(Arrays.toString(process.toArray()));
+        TreeNode<String> reverse = reverse(a);
+        System.out.println(reverse);
     }
 
     /**
@@ -136,6 +138,22 @@ public class Tree {
             }
         }
         return result;
+    }
+
+    /**
+     * 树按中轴反转
+     *          a                 a
+     *       b     c    ->     c      b
+     */
+    private static <T> TreeNode<T> reverse(TreeNode<T> root) {
+        if (root == null || (root.getLeft() == null) && root.getRight() == null) {
+            return root;
+        }
+        TreeNode<T> left = reverse(root.getLeft());
+        TreeNode<T> right = reverse(root.getRight());
+        root.setLeft(right);
+        root.setRight(left);
+        return root;
     }
 
     private static class TreeNode<T> {
