@@ -34,12 +34,27 @@ public class Tree {
         i.setRight(j);
         TreeNode<String> k = new TreeNode<>("k");
         c.setLeft(k);
+        System.out.println("前序遍历");
         List<String> process = prev(a);
         System.out.println(Arrays.toString(process.toArray()));
+        List<String> list = new ArrayList<>();
+        prev(a, list);
+        System.out.println(Arrays.toString(list.toArray()));
+        System.out.println("----------------------------------");
+        System.out.println("中序遍历");
         process = middle(a);
         System.out.println(Arrays.toString(process.toArray()));
+        list = new ArrayList<>();
+        middle(a, list);
+        System.out.println(Arrays.toString(list.toArray()));
+        System.out.println("----------------------------------");
+        System.out.println("后序遍历");
         process = next(a);
         System.out.println(Arrays.toString(process.toArray()));
+        list = new ArrayList<>();
+        next(a, list);
+        System.out.println(Arrays.toString(list.toArray()));
+        System.out.println("----------------------------------");
         TreeNode<String> reverse = reverse(a);
         System.out.println(reverse);
     }
@@ -66,6 +81,14 @@ public class Tree {
             }
         }
         return result;
+    }
+
+    private static <T> void prev(TreeNode<T> node, List<T> list) {
+        if (node != null) {
+            list.add(node.getValue());
+            prev(node.getLeft(), list);
+            prev(node.getRight(), list);
+        }
     }
 
     /**
@@ -96,6 +119,14 @@ public class Tree {
             }
         }
         return result;
+    }
+
+    private static <T> void middle(TreeNode<T> node, List<T> list) {
+        if (node != null) {
+            middle(node.getLeft(), list);
+            list.add(node.getValue());
+            middle(node.getRight(), list);
+        }
     }
 
     /**
@@ -140,10 +171,18 @@ public class Tree {
         return result;
     }
 
+    private static <T> void next(TreeNode<T> node, List<T> list) {
+        if (node != null) {
+            next(node.getLeft(), list);
+            next(node.getRight(), list);
+            list.add(node.getValue());
+        }
+    }
+
     /**
      * 树按中轴反转
-     *          a                 a
-     *       b     c    ->     c      b
+     *      a                 a
+     *   b     c    ->     c      b
      */
     private static <T> TreeNode<T> reverse(TreeNode<T> root) {
         if (root == null || (root.getLeft() == null) && root.getRight() == null) {
