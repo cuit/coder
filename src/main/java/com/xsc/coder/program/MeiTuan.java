@@ -20,19 +20,22 @@ import java.util.stream.Collectors;
  */
 public class MeiTuan {
 
-    private static Queue<Long> queue = new ConcurrentLinkedDeque<>();
+    private static final Queue<Long> queue = new ConcurrentLinkedDeque<>();
 
+    /**
+     * 实现一个单机限流器，要求每秒钟只能通过100个请求。也就是限制QPS<=100。
+     */
     public static boolean tryAcquire() {
         long timestamp = System.currentTimeMillis();
         queue.add(timestamp);
         if (queue.size() <= 100) {
             return true;
         } else {
-            Iterator<Long> iteator = queue.iterator();
-            while (iteator.hasNext()) {
-                long val = iteator.next();
+            Iterator<Long> iterator = queue.iterator();
+            while (iterator.hasNext()) {
+                long val = iterator.next();
                 if (timestamp - val >= 1000) {
-                    iteator.remove();
+                    iterator.remove();
                 } else {
                     break;
                 }
@@ -51,7 +54,7 @@ public class MeiTuan {
     //[9,20],
     //[15,7]
     //]
-    public class TreeNode {
+    public static class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
@@ -61,7 +64,7 @@ public class MeiTuan {
         }
     }
 
-    public List<List<Integer>> levelOrder(TreeNode root) {
+    public static List<List<Integer>> levelOrder(TreeNode root) {
         Queue<TreeNodeWithLevel> queue = new LinkedList<>();
         queue.add(new TreeNodeWithLevel(root, 1));
         Map<Integer, List<Integer>> map = new HashMap<>();
@@ -86,9 +89,9 @@ public class MeiTuan {
 
     private static class TreeNodeWithLevel {
 
-        private TreeNode node;
+        private final TreeNode node;
 
-        private int level;
+        private final int level;
 
         public TreeNodeWithLevel(TreeNode node, int level) {
             this.node = node;
