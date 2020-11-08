@@ -2,8 +2,6 @@ package com.xsc.coder.program;
 
 import com.google.common.collect.Lists;
 
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -66,8 +64,7 @@ public class MeiTuan {
     public List<List<Integer>> levelOrder(TreeNode root) {
         Queue<TreeNodeWithLevel> queue = new LinkedList<>();
         queue.add(new TreeNodeWithLevel(root, 1));
-        ArrayList<ArrayList<Integer>> results = new ArrayList<>();
-        Map<Integer, List<Integer>> map = new HashMap();
+        Map<Integer, List<Integer>> map = new HashMap<>();
         while (!queue.isEmpty()) {
             TreeNodeWithLevel nodeWithLevel = queue.poll();
             if (map.containsKey(nodeWithLevel.level)) {
@@ -83,7 +80,7 @@ public class MeiTuan {
             }
         }
         return map.entrySet().stream()
-                .sorted(Comparator.comparing(Map.Entry::getKey))
+                .sorted(Map.Entry.comparingByKey())
                 .map(Map.Entry::getValue).collect(Collectors.toList());
     }
 
@@ -155,20 +152,8 @@ public class MeiTuan {
             } else {
                 node.val = val;
             }
-            ListNode tmp;
-            if (Objects.isNull(result)) {
-                result = node;
-            } else {
-                // tmp零时存储头结点
-                tmp = result;
-                while (result.next != null) {
-                    result = result.next;
-                }
-                // 把新生成的节点加在尾部
-                result.next = node;
-                // 重置result为头结点
-                result = tmp;
-            }
+            // 把新生成的节点加到尾部
+            result = addLast(result, node);
             // reverserNode1向后移动一个节点
             if (Objects.nonNull(reverserNode1)) {
                 reverserNode1 = reverserNode1.next;
@@ -179,15 +164,10 @@ public class MeiTuan {
             }
             // 如果reverserNode1和reverserNode2节点都为空，说明是都移动到最后一位了，并且还有进位
             if (Objects.isNull(reverserNode1) && Objects.isNull(reverserNode2) && flag) {
-                tmp = result;
-                while (result.next != null) {
-                    result = result.next;
-                }
                 // 加上最后一个进位节点
                 node = new ListNode();
                 node.val = 1;
-                result.next = node;
-                result = tmp;
+                result = addLast(result, node);
             }
         }
         // 反转节点
@@ -215,6 +195,26 @@ public class MeiTuan {
             node = next;
         }
         return head;
+    }
+
+    /**
+     * 把新生成的节点加到尾部
+     *
+     * @param head    原始头结点
+     * @param newNode 新节点
+     * @return 新链表的头结点
+     */
+    private static ListNode addLast(ListNode head, ListNode newNode) {
+        if (Objects.isNull(head)) {
+            return newNode;
+        }
+        // 原始头节点
+        ListNode tmp = head;
+        while (head.next != null) {
+            head = head.next;
+        }
+        head.next = newNode;
+        return tmp;
     }
 
     public static class ListNode {
