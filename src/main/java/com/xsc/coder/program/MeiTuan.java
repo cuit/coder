@@ -129,19 +129,26 @@ public class MeiTuan {
     //输出
     //{1,0,0,0}
     public static ListNode addInList(ListNode head1, ListNode head2) {
-        // write code here
+        // 反转第一个节点 7 -> 3 -> 9
         ListNode reverserNode1 = reverse(head1);
+        // 反转第二个节点 3 -> 6
         ListNode reverserNode2 = reverse(head2);
+        // 存储最终结果
         ListNode result = null;
+        // 当前两个节点相加是否进位标志位
         boolean flag = false;
         while (reverserNode1 != null || reverserNode2 != null) {
             ListNode node = new ListNode();
             int val = (reverserNode1 != null ? reverserNode1.val : 0)
                     + (reverserNode2 != null ? reverserNode2.val : 0);
+            // 如果上一次运算后有进位，那么本次就需要把本次运算的结果和进位相加
             if (flag) {
+                // 加上进位
                 val += 1;
+                // 重置标志位
                 flag = false;
             }
+            // 如果运算后的结果大于9，那么需要进位
             if (val > 9) {
                 flag = true;
                 node.val = val - 10;
@@ -152,38 +159,55 @@ public class MeiTuan {
             if (Objects.isNull(result)) {
                 result = node;
             } else {
+                // tmp零时存储头结点
                 tmp = result;
                 while (result.next != null) {
                     result = result.next;
                 }
+                // 把新生成的节点加在尾部
                 result.next = node;
+                // 重置result为头结点
                 result = tmp;
             }
+            // reverserNode1向后移动一个节点
             if (Objects.nonNull(reverserNode1)) {
                 reverserNode1 = reverserNode1.next;
             }
+            // reverserNode2向后移动一个节点
             if (Objects.nonNull(reverserNode2)) {
                 reverserNode2 = reverserNode2.next;
             }
+            // 如果reverserNode1和reverserNode2节点都为空，说明是都移动到最后一位了，并且还有进位
             if (Objects.isNull(reverserNode1) && Objects.isNull(reverserNode2) && flag) {
                 tmp = result;
                 while (result.next != null) {
                     result = result.next;
                 }
+                // 加上最后一个进位节点
                 node = new ListNode();
                 node.val = 1;
                 result.next = node;
                 result = tmp;
             }
         }
+        // 反转节点
         result = reverse(result);
         return result;
     }
 
+    /**
+     * 链表反转
+     *
+     * @param node 当前头结点
+     * @return 反转后的头结点
+     */
     private static ListNode reverse(ListNode node) {
+        // 前驱节点
         ListNode prev = null;
+        // 反转后的头结点
         ListNode head = node;
         while (node != null) {
+            // 每次存储最后一个不为空的节点，既是反转后的头结点
             head = node;
             ListNode next = node.next;
             node.next = prev;
