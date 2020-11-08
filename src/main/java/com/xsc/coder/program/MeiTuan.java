@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
@@ -98,6 +99,27 @@ public class MeiTuan {
         }
     }
 
+    public static void main(String[] args) {
+        ListNode root1 = new ListNode();
+        root1.val = 9;
+        ListNode child1 = new ListNode();
+        child1.val = 3;
+        ListNode child2 = new ListNode();
+        child2.val = 7;
+        root1.next = child1;
+        child1.next = child2;
+        ListNode root2 = new ListNode();
+        root2.val = 6;
+        ListNode child3 = new ListNode();
+        child3.val = 3;
+        root2.next = child3;
+        ListNode result = addInList(root1, root2);
+        while (result != null) {
+            System.out.println(result.val);
+            result = result.next;
+        }
+    }
+
     // 假设链表中每一个节点的值都在 0 - 9 之间，那么链表整体就可以代表一个整数。
     //给定两个这种链表，请生成代表两个整数相加值的结果链表。
     //例如：链表 1 为 9->3->7，链表 2 为 6->3，最后生成新的结果链表为 1->0->0->0。
@@ -106,11 +128,11 @@ public class MeiTuan {
     //[9,3,7],[6,3]
     //输出
     //{1,0,0,0}
-    public ListNode addInList(ListNode head1, ListNode head2) {
+    public static ListNode addInList(ListNode head1, ListNode head2) {
         // write code here
         ListNode reverserNode1 = reverse(head1);
         ListNode reverserNode2 = reverse(head2);
-        ListNode result = new ListNode();
+        ListNode result = null;
         boolean flag = false;
         while (reverserNode1 != null || reverserNode2 != null) {
             ListNode node = new ListNode();
@@ -122,34 +144,56 @@ public class MeiTuan {
             }
             if (val > 9) {
                 flag = true;
-                node.val = val - 9;
+                node.val = val - 10;
             } else {
                 node.val = val;
             }
-            ListNode tmp = result;
-            while (result.next != null) {
-                result = result.next;
+            ListNode tmp;
+            if (Objects.isNull(result)) {
+                result = node;
+            } else {
+                tmp = result;
+                while (result.next != null) {
+                    result = result.next;
+                }
+                result.next = node;
+                result = tmp;
             }
-            result.next = node;
-            result = tmp;
-            reverserNode1 = reverserNode1.next;
-            reverserNode2 = reverserNode2.next;
+            if (Objects.nonNull(reverserNode1)) {
+                reverserNode1 = reverserNode1.next;
+            }
+            if (Objects.nonNull(reverserNode2)) {
+                reverserNode2 = reverserNode2.next;
+            }
+            if (Objects.isNull(reverserNode1) && Objects.isNull(reverserNode2) && flag) {
+                tmp = result;
+                while (result.next != null) {
+                    result = result.next;
+                }
+                node = new ListNode();
+                node.val = 1;
+                result.next = node;
+                result = tmp;
+            }
         }
+        result = reverse(result);
         return result;
     }
 
     private static ListNode reverse(ListNode node) {
         ListNode prev = null;
-        while (node.next != null) {
+        ListNode head = node;
+        while (node != null) {
+            head = node;
             ListNode next = node.next;
             node.next = prev;
             prev = node;
-            node = node.next;
+            node = next;
         }
-        return node;
+        return head;
     }
 
-    public class ListNode {
+    public static class ListNode {
         int val;
         ListNode next = null;
     }
