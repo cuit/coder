@@ -15,7 +15,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
- * 实现一个单机限流器，要求每秒钟只能通过100个请求。也就是限制QPS<=100。
+ * 美团编程题
  *
  * @author xia
  * @date 2020/11/2 17:06
@@ -115,14 +115,20 @@ public class MeiTuan {
         ListNode next = null;
     }
 
-    // 假设链表中每一个节点的值都在 0 - 9 之间，那么链表整体就可以代表一个整数。
-    //给定两个这种链表，请生成代表两个整数相加值的结果链表。
-    //例如：链表 1 为 9->3->7，链表 2 为 6->3，最后生成新的结果链表为 1->0->0->0。
-    //示例1
-    //输入
-    //[9,3,7],[6,3]
-    //输出
-    //{1,0,0,0}
+    /**
+     * 假设链表中每一个节点的值都在 0 - 9 之间，那么链表整体就可以代表一个整数。
+     * 给定两个这种链表，请生成代表两个整数相加值的结果链表。
+     * 例如：链表 1 为 9->3->7，链表 2 为 6->3，最后生成新的结果链表为 1->0->0->0。
+     * 示例1
+     * 输入
+     * [9,3,7],[6,3]
+     * 输出
+     * {1,0,0,0}
+     *
+     * @param head1 链表1的头结点
+     * @param head2 链表2的头结点
+     * @return 结果
+     */
     public static ListNode addInList(ListNode head1, ListNode head2) {
         // 反转第一个节点 7 -> 3 -> 9
         ListNode reverserNode1 = reverse(head1);
