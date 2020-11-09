@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Random;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -44,16 +46,8 @@ public class MeiTuan {
         }
     }
 
-    //给定一个二叉树，返回该二叉树层序遍历的结果，（从左到右，一层一层地遍历）
-    //例如：
-    //给定的二叉树是{3,9,20,#,#,15,7},
-    //
-    //该二叉树层序遍历的结果是
-    //[
-    //[3],
-    //[9,20],
-    //[15,7]
-    //]
+    // *****************************************************************************************************************
+
     public static class TreeNode {
         int val;
         TreeNode left;
@@ -64,6 +58,33 @@ public class MeiTuan {
         }
     }
 
+    private static class TreeNodeWithLevel {
+
+        private final TreeNode node;
+
+        private final int level;
+
+        public TreeNodeWithLevel(TreeNode node, int level) {
+            this.node = node;
+            this.level = level;
+        }
+    }
+
+    /**
+     * 给定一个二叉树，返回该二叉树层序遍历的结果，（从左到右，一层一层地遍历）
+     * 例如：
+     * 给定的二叉树是{3,9,20,#,#,15,7},
+     * <p>
+     * 该二叉树层序遍历的结果是
+     * [
+     * [3],
+     * [9,20],
+     * [15,7]
+     * ]
+     *
+     * @param root 根节点
+     * @return 层序遍历数组
+     */
     public static List<List<Integer>> levelOrder(TreeNode root) {
         Queue<TreeNodeWithLevel> queue = new LinkedList<>();
         queue.add(new TreeNodeWithLevel(root, 1));
@@ -87,37 +108,11 @@ public class MeiTuan {
                 .map(Map.Entry::getValue).collect(Collectors.toList());
     }
 
-    private static class TreeNodeWithLevel {
+    // *****************************************************************************************************************
 
-        private final TreeNode node;
-
-        private final int level;
-
-        public TreeNodeWithLevel(TreeNode node, int level) {
-            this.node = node;
-            this.level = level;
-        }
-    }
-
-    public static void main(String[] args) {
-        ListNode root1 = new ListNode();
-        root1.val = 9;
-        ListNode child1 = new ListNode();
-        child1.val = 3;
-        ListNode child2 = new ListNode();
-        child2.val = 7;
-        root1.next = child1;
-        child1.next = child2;
-        ListNode root2 = new ListNode();
-        root2.val = 6;
-        ListNode child3 = new ListNode();
-        child3.val = 3;
-        root2.next = child3;
-        ListNode result = addInList(root1, root2);
-        while (result != null) {
-            System.out.println(result.val);
-            result = result.next;
-        }
+    public static class ListNode {
+        int val;
+        ListNode next = null;
     }
 
     // 假设链表中每一个节点的值都在 0 - 9 之间，那么链表整体就可以代表一个整数。
@@ -220,8 +215,64 @@ public class MeiTuan {
         return tmp;
     }
 
-    public static class ListNode {
-        int val;
-        ListNode next = null;
+    // *****************************************************************************************************************
+
+    public static void main(String[] args) {
+        testTryAcquire();
+        testLevelOrder();
+        testAddInList();
     }
+
+    private static void testTryAcquire() {
+        Random random = new Random();
+        for (int i = 0; i < 1000; i++) {
+            boolean tryAcquire = tryAcquire();
+            System.out.println("尝试获取锁:" + tryAcquire);
+            try {
+                TimeUnit.MILLISECONDS.sleep(random.nextInt(10));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private static void testLevelOrder() {
+        TreeNode root = new TreeNode(3);
+        TreeNode node1 = new TreeNode(9);
+        root.left = node1;
+        TreeNode node2 = new TreeNode(20);
+        root.right = node2;
+        TreeNode node3 = new TreeNode(15);
+        node1.right = node3;
+        TreeNode node4 = new TreeNode(7);
+        node2.left = node4;
+        TreeNode node5 = new TreeNode(12);
+        node2.right = node5;
+        List<List<Integer>> lists = levelOrder(root);
+        for (List<Integer> list : lists) {
+            System.out.println(list.stream().map(String::valueOf).collect(Collectors.joining(",")));
+        }
+    }
+
+    private static void testAddInList() {
+        ListNode root1 = new ListNode();
+        root1.val = 9;
+        ListNode child1 = new ListNode();
+        child1.val = 3;
+        ListNode child2 = new ListNode();
+        child2.val = 7;
+        root1.next = child1;
+        child1.next = child2;
+        ListNode root2 = new ListNode();
+        root2.val = 6;
+        ListNode child3 = new ListNode();
+        child3.val = 3;
+        root2.next = child3;
+        ListNode result = addInList(root1, root2);
+        while (result != null) {
+            System.out.println(result.val);
+            result = result.next;
+        }
+    }
+
 }
