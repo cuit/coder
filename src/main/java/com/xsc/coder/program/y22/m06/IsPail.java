@@ -58,6 +58,7 @@ public class IsPail {
         if (head == null) {
             return false;
         }
+        // 先复制一个
         ListNode n_h = head;
         ListNode node = head;
         ListNode copyNode = new ListNode(head.val);
@@ -70,6 +71,7 @@ public class IsPail {
             copyNode = copyNode.next;
             i++;
         }
+        // 再反转
         ListNode pre = null;
         ListNode cur = c_head;
         while (cur != null) {
@@ -78,6 +80,7 @@ public class IsPail {
             pre = cur;
             cur = cur_next;
         }
+        // 再比较
         for (int n = 0; n < i; n++) {
             int k = n_h.val;
             int p = pre.val;
