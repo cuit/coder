@@ -27,7 +27,7 @@ package com.xsc.coder.program.y22.m06;
  * @author xia
  * @date 2022/6/25 20:49
  */
-public class deleteDuplicates2 {
+public class DeleteDuplicates2 {
 
     public static class ListNode {
         int val;
