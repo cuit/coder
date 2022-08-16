@@ -2,7 +2,6 @@ package com.xsc.coder.program.y22.m08;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * 描述
@@ -63,9 +62,9 @@ public class LowestCommonAncestor {
      * @param q    q节点
      * @return 最近公共祖先
      */
-    public static int lowestCommonAncestor优(TreeNode root, int p, int q) {
-        List<Integer> pList = getRouteList优(root, p);
-        List<Integer> qList = getRouteList优(root, q);
+    public static int lowestCommonAncestor(TreeNode root, int p, int q) {
+        List<Integer> pList = getRouteList(root, p);
+        List<Integer> qList = getRouteList(root, q);
         int num = Math.min(pList.size(), qList.size());
         int result = root.val;
         for (int i = 0; i < num; i++) {
@@ -84,7 +83,7 @@ public class LowestCommonAncestor {
      * @param root 根节点
      * @return 到达n的经过的节点
      */
-    private static List<Integer> getRouteList优(TreeNode root, int n) {
+    private static List<Integer> getRouteList(TreeNode root, int n) {
         List<Integer> list = new ArrayList<>();
         TreeNode node = root;
         while (node != null) {
@@ -97,86 +96,6 @@ public class LowestCommonAncestor {
             } else {
                 node = node.left;
             }
-        }
-        return list;
-    }
-
-    /**
-     * 代码中的类名、方法名、参数名已经指定，请勿修改，直接返回方法规定的值即可
-     *
-     * @param root TreeNode类
-     * @param p    int整型
-     * @param q    int整型
-     * @return int整型
-     */
-    public static int lowestCommonAncestor(TreeNode root, int p, int q) {
-        // write code here
-        Stack<TreeNode> pStack = new Stack<>();
-        pStack.push(root);
-        Stack<TreeNode> qStack = new Stack<>();
-        qStack.push(root);
-        List<Integer> pList = getRouteList(root, p, pStack);
-        List<Integer> qList = getRouteList(root, q, qStack);
-        int num = Math.min(pList.size(), qList.size());
-        int result = root.val;
-        for (int i = 0; i < num; i++) {
-            if (pList.get(i).equals(qList.get(i))) {
-                result = pList.get(i);
-            } else {
-                break;
-            }
-        }
-        return result;
-    }
-
-    /**
-     * 获取从根节点到p的路径【普通二叉树树也满足】
-     *
-     * @param node  根节点
-     * @param p     目标节点
-     * @param stack 临时栈
-     * @return 路径
-     */
-    private static List<Integer> getRouteList(TreeNode node, int p, Stack<TreeNode> stack) {
-        TreeNode peek = stack.peek();
-        // 如果等于，则满足
-        if (peek.val == p) {
-            return get(stack);
-        }
-        List<Integer> result = new ArrayList<>();
-        // 如果当前是叶子节点
-        if (peek.left == null && peek.right == null) {
-            // 则弹出叶子节点
-            stack.pop();
-            return result;
-        }
-        // 当左节点不为空
-        if (peek.left != null) {
-            // 左节点入栈
-            stack.push(peek.left);
-            result = getRouteList(peek.left, p, stack);
-        }
-        // 如果已经满足条件，则提前返回
-        if (result.size() != 0) {
-            return result;
-        }
-        // 当右节点不为空
-        if (peek.right != null) {
-            // 栈中删除左节点
-            stack.remove(peek.left);
-            // 右节点入栈
-            stack.push(peek.right);
-            result = getRouteList(peek.right, p, stack);
-        }
-        return result;
-    }
-
-    // 把栈中元素转换成list结构
-    private static List<Integer> get(Stack<TreeNode> stack) {
-        List<Integer> list = new ArrayList<>();
-        while (!stack.isEmpty()) {
-            TreeNode pop = stack.pop();
-            list.add(0, pop.val);
         }
         return list;
     }
@@ -199,8 +118,7 @@ public class LowestCommonAncestor {
         node3.right = node7;
         node5.left = node8;
         node5.right = node9;
-//        int lowestCommonAncestor = lowestCommonAncestor(node1, 0, 5);
-        int lowestCommonAncestor = lowestCommonAncestor优(node1, 12, 11);
+        int lowestCommonAncestor = lowestCommonAncestor(node1, 0, 5);
         System.out.println(lowestCommonAncestor);
     }
 }
