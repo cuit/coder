@@ -45,6 +45,9 @@ public class MaxInWindows {
 
     public static ArrayList<Integer> maxInWindows(int[] num, int size) {
         ArrayList<Integer> result = new ArrayList<>();
+        if (size <= 0) {
+            return result;
+        }
         // 初始化一个比较的数组
         int[] newNums = new int[size];
         for (int i = 0; i <= num.length - size; i++) {
@@ -53,13 +56,11 @@ public class MaxInWindows {
                 heap(newNums);
             } else {
                 int delIndex = getIndex(newNums, num[i - 1]);
-                int deleteVal = newNums[delIndex];
                 int newVal = num[i + size - 1];
-                if (newVal <= deleteVal) {
-
-                } else if (newVal > deleteVal && newVal <= )
-                newNums[delIndex] = num[i + size - 1];
-
+                newNums[delIndex] = newVal;
+                if (newVal >= newNums[0]) {
+                    heap(newNums);
+                }
             }
             if (newNums.length > 0) {
                 result.add(newNums[0]);
