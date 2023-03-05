@@ -78,6 +78,48 @@ public class Node {
         return root.next;
     }
 
+    /**
+     * 链表全部局部反转
+     *
+     * @param node 原始链表
+     * @param n    n个一反转
+     * @return 反转后节点
+     */
+    private static ListNode reversePartCycle(ListNode node, int n) {
+        if (node == null) {
+            return null;
+        }
+        ListNode pre = new ListNode(-1);
+        pre.next = node;
+        ListNode origin_pre = pre;
+        ListNode cur = node;
+        boolean flag = false;
+        while (cur.next != null) {
+            ListNode copy_cur = cur;
+            for (int i = 0; i < n - 1; i++) {
+                if (copy_cur == null) {
+                    flag = true;
+                    break;
+                }
+                copy_cur = copy_cur.next;
+            }
+            if (flag) {
+                break;
+            }
+            for (int i = 0; i < n - 1; i++) {
+                ListNode cur_next = cur.next;
+                cur.next = cur_next.next;
+                cur_next.next = pre.next;
+                pre.next = cur_next;
+            }
+            for (int i = 0; i < n; i++) {
+                pre = pre.next;
+            }
+            cur = pre.next;
+        }
+        return origin_pre.next;
+    }
+
     public static void main(String[] args) {
         ListNode node1 = new ListNode(1);
         ListNode node2 = new ListNode(2);
@@ -93,7 +135,8 @@ public class Node {
 //            System.out.println(reverse.value);
 //            reverse = reverse.next;
 //        }
-        ListNode node = reverseFromNToM(node1, 6, 10);
+//        ListNode node = reverseFromNToM(node1, 6, 10);
+        ListNode node = reversePartCycle(node1, 2);
         while (node != null) {
             System.out.println(node.value);
             node = node.next;
